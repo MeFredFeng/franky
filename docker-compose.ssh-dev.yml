@@ -1,0 +1,20 @@
+services:
+  franky-ssh-dev:
+    build:
+      context: .
+      dockerfile: ./docker/run/Dockerfile
+      args:
+        LIBFRANKA_VERSION: ${LIBFRANKA_VERSION:-0.16.0}
+    network_mode: "host"
+    privileged: true
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    working_dir: /work/franky
+    volumes:
+      - ./:/work/franky
+      - ./build:/work/franky/build
+    command: ["bash", "-lc", "sleep infinity"]
+    stdin_open: true
+    tty: true
